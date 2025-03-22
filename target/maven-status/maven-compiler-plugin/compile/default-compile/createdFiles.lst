@@ -1,0 +1,16 @@
+org/example/service/CDR/CDRGeneratorService.class
+org/example/service/subscriber/SubscriberServiceImpl.class
+org/example/dto/UDR.class
+org/example/service/UDR/UDRGenerationService.class
+org/example/dto/UDR$CallDetail.class
+org/example/service/report/ReportGenerationService.class
+org/example/controller/ReportController.class
+org/example/service/CDR/CDRServiceImpl.class
+org/example/repository/CDRRepository.class
+org/example/controller/UDRController.class
+org/example/service/subscriber/SubscriberService.class
+org/example/Application.class
+org/example/service/CDR/CDRService.class
+org/example/entity/Subscriber.class
+org/example/entity/CDR.class
+org/example/repository/SubscriberRepository.class

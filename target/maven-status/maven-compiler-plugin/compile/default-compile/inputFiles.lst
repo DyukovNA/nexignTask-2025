@@ -1,0 +1,15 @@
+/Users/nikitadyuckov/Documents/GitHub/nexignTask-2025/src/main/java/org/example/Application.java
+/Users/nikitadyuckov/Documents/GitHub/nexignTask-2025/src/main/java/org/example/controller/ReportController.java
+/Users/nikitadyuckov/Documents/GitHub/nexignTask-2025/src/main/java/org/example/controller/UDRController.java
+/Users/nikitadyuckov/Documents/GitHub/nexignTask-2025/src/main/java/org/example/dto/UDR.java
+/Users/nikitadyuckov/Documents/GitHub/nexignTask-2025/src/main/java/org/example/entity/CDR.java
+/Users/nikitadyuckov/Documents/GitHub/nexignTask-2025/src/main/java/org/example/entity/Subscriber.java
+/Users/nikitadyuckov/Documents/GitHub/nexignTask-2025/src/main/java/org/example/repository/CDRRepository.java
+/Users/nikitadyuckov/Documents/GitHub/nexignTask-2025/src/main/java/org/example/repository/SubscriberRepository.java
+/Users/nikitadyuckov/Documents/GitHub/nexignTask-2025/src/main/java/org/example/service/CDR/CDRGeneratorService.java
+/Users/nikitadyuckov/Documents/GitHub/nexignTask-2025/src/main/java/org/example/service/CDR/CDRService.java
+/Users/nikitadyuckov/Documents/GitHub/nexignTask-2025/src/main/java/org/example/service/CDR/CDRServiceImpl.java
+/Users/nikitadyuckov/Documents/GitHub/nexignTask-2025/src/main/java/org/example/service/UDR/UDRGenerationService.java
+/Users/nikitadyuckov/Documents/GitHub/nexignTask-2025/src/main/java/org/example/service/report/ReportGenerationService.java
+/Users/nikitadyuckov/Documents/GitHub/nexignTask-2025/src/main/java/org/example/service/subscriber/SubscriberService.java
+/Users/nikitadyuckov/Documents/GitHub/nexignTask-2025/src/main/java/org/example/service/subscriber/SubscriberServiceImpl.java

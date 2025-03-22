@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UDRController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">application</a> &gt; <a href="index.source.html" class="el_package">org.example.controller</a> &gt; <span class="el_source">UDRController.java</span></div><h1>UDRController.java</h1><pre class="source lang-java linenums">package org.example.controller;
+
+
+import org.example.dto.UDR;
+import org.example.service.UDR.UDRGenerationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.YearMonth;
+import java.util.Map;
+
+@RestController
+@RequestMapping(&quot;/udr&quot;)
+public class UDRController {
+
+    private final UDRGenerationService udrService;
+
+    @Autowired
+<span class="fc" id="L20">    public UDRController(UDRGenerationService udrService) {</span>
+<span class="fc" id="L21">        this.udrService = udrService;</span>
+<span class="fc" id="L22">    }</span>
+
+    // Метод для получения UDR записи по одному абоненту
+    @GetMapping(&quot;/{msisdn}&quot;)
+    public UDR getUDRForSubscriber(
+            @PathVariable String msisdn,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) YearMonth month) {
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (month != null) {</span>
+<span class="fc" id="L30">            return udrService.generateUDRForSubscriber(msisdn, month);</span>
+        } else {
+<span class="fc" id="L32">            return udrService.generateUDRForSubscriber(msisdn);</span>
+        }
+    }
+
+    // Метод для получения UDR записей по всем абонентам за месяц
+    @GetMapping(&quot;/monthly&quot;)
+    public Map&lt;String, UDR&gt; getUDRForAllSubscribers(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) YearMonth month) {
+<span class="fc" id="L40">        return udrService.generateUDRForAllSubscribers(month);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
