@@ -9,20 +9,16 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
-@ActiveProfiles("test")
-@DataJpaTest
 class CDRServiceImplTest {
 
     @Mock
@@ -36,14 +32,12 @@ class CDRServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this); // Инициализация моков
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void saveCDR_ShouldReturnSavedCDR() {
-        // Arrange
+    void testSaveCDR() {
         CDR cdr = new CDR();
-        cdr.setCallType("01");
         cdr.setCallerMsisdn("79992221122");
         cdr.setReceiverMsisdn("79993331133");
         cdr.setStartTime(LocalDateTime.now());
@@ -51,123 +45,107 @@ class CDRServiceImplTest {
 
         when(cdrRepository.save(cdr)).thenReturn(cdr);
 
-        // Act
         CDR savedCDR = cdrService.saveCDR(cdr);
 
-        // Assert
         assertNotNull(savedCDR);
-        assertEquals("01", savedCDR.getCallType());
+        assertEquals(cdr.getCallerMsisdn(), savedCDR.getCallerMsisdn());
         verify(cdrRepository, times(1)).save(cdr);
     }
 
     @Test
-    void fetchCDRList_ShouldReturnAllCDRs() {
-        // Arrange
+    void testFetchCDRList() {
         CDR cdr1 = new CDR();
-        cdr1.setCallType("01");
         cdr1.setCallerMsisdn("79992221122");
+        cdr1.setReceiverMsisdn("79993331133");
 
         CDR cdr2 = new CDR();
-        cdr2.setCallType("02");
-        cdr2.setCallerMsisdn("79993331133");
+        cdr2.setCallerMsisdn("79994441144");
+        cdr2.setReceiverMsisdn("79995551155");
 
         when(cdrRepository.findAll()).thenReturn(Arrays.asList(cdr1, cdr2));
 
-        // Act
-        List<CDR> cdrs = cdrService.fetchCDRList();
+        List<CDR> cdrList = cdrService.fetchCDRList();
 
-        // Assert
-        assertEquals(2, cdrs.size());
+        assertEquals(2, cdrList.size());
         verify(cdrRepository, times(1)).findAll();
     }
 
     @Test
-    void deleteCDRByID_ShouldDeleteCDR() {
-        // Arrange
+    void testDeleteCDRByID() {
         Long cdrId = 1L;
 
-        // Act
+        doNothing().when(cdrRepository).deleteById(cdrId);
+
         cdrService.deleteCDRByID(cdrId);
 
-        // Assert
         verify(cdrRepository, times(1)).deleteById(cdrId);
     }
 
     @Test
-    void fetchCDRListByMsisdn_ShouldReturnCDRsForGivenMsisdn() {
-        // Arrange
+    void testFetchCDRListByMsisdn() {
         String callerMsisdn = "79992221122";
         String receiverMsisdn = "79993331133";
 
-        CDR cdr1 = new CDR();
-        cdr1.setCallerMsisdn(callerMsisdn);
-
-        CDR cdr2 = new CDR();
-        cdr2.setReceiverMsisdn(receiverMsisdn);
+        CDR cdr = new CDR();
+        cdr.setCallerMsisdn(callerMsisdn);
+        cdr.setReceiverMsisdn(receiverMsisdn);
 
         when(cdrRepository.findByCallerMsisdnOrReceiverMsisdn(callerMsisdn, receiverMsisdn))
-                .thenReturn(Arrays.asList(cdr1, cdr2));
+                .thenReturn(Collections.singletonList(cdr));
 
-        // Act
-        List<CDR> cdrs = cdrService.fetchCDRListByMsisdn(callerMsisdn, receiverMsisdn);
+        List<CDR> cdrList = cdrService.fetchCDRListByMsisdn(callerMsisdn, receiverMsisdn);
 
-        // Assert
-        assertEquals(2, cdrs.size());
-        verify(cdrRepository, times(1))
-                .findByCallerMsisdnOrReceiverMsisdn(callerMsisdn, receiverMsisdn);
+        assertEquals(1, cdrList.size());
+        assertEquals(callerMsisdn, cdrList.get(0).getCallerMsisdn());
+        verify(cdrRepository, times(1)).findByCallerMsisdnOrReceiverMsisdn(callerMsisdn, receiverMsisdn);
     }
 
     @Test
-    void initializeData_ShouldInitializeSubscribersAndGenerateCDRs() {
-        // Arrange
-        Subscriber subscriber = new Subscriber();
-        subscriber.setMsisdn("79992221122");
-
-        when(subscriberService.fetchSubscriberList()).thenReturn(Collections.singletonList(subscriber));
-        when(cdrRepository.saveAll(anyList())).thenReturn(Collections.emptyList());
-
-        // Act
+    void testInitializeData() {
         cdrService.initializeData();
 
-        // Assert
-        verify(subscriberService, times(1)).fetchSubscriberList();
-        verify(cdrRepository, times(1)).saveAll(anyList());
+        verify(subscriberService, times(10)).saveSubscriber(any(Subscriber.class));
+        verify(cdrRepository, atLeastOnce()).saveAll(anyList());
     }
 
     @Test
-    void saveAllCDRs_ShouldSaveAllCDRs() {
-        // Arrange
+    void testSaveAllCDRs() {
         CDR cdr1 = new CDR();
+        cdr1.setCallerMsisdn("79992221122");
+        cdr1.setReceiverMsisdn("79993331133");
+
         CDR cdr2 = new CDR();
+        cdr2.setCallerMsisdn("79994441144");
+        cdr2.setReceiverMsisdn("79995551155");
 
-        when(cdrRepository.saveAll(Arrays.asList(cdr1, cdr2))).thenReturn(Arrays.asList(cdr1, cdr2));
+        List<CDR> cdrs = Arrays.asList(cdr1, cdr2);
 
-        // Act
-        List<CDR> savedCDRs = cdrService.saveAllCDRs(Arrays.asList(cdr1, cdr2));
+        when(cdrRepository.saveAll(cdrs)).thenReturn(cdrs);
 
-        // Assert
+        List<CDR> savedCDRs = cdrService.saveAllCDRs(cdrs);
+
         assertEquals(2, savedCDRs.size());
-        verify(cdrRepository, times(1)).saveAll(Arrays.asList(cdr1, cdr2));
+        verify(cdrRepository, times(1)).saveAll(cdrs);
     }
 
     @Test
-    void fetchCDRListByMsisdnAndTime_ShouldReturnCDRsForGivenMsisdnAndTimeRange() {
-        // Arrange
+    void testFetchCDRListByMsisdnAndTime() {
         String msisdn = "79992221122";
-        LocalDateTime startOfMonth = LocalDateTime.now().minusMonths(1);
+        LocalDateTime startOfMonth = LocalDateTime.now().minusDays(30);
         LocalDateTime endOfMonth = LocalDateTime.now();
 
         CDR cdr = new CDR();
         cdr.setCallerMsisdn(msisdn);
+        cdr.setReceiverMsisdn("79993331133");
+        cdr.setStartTime(startOfMonth.plusDays(1));
 
         when(cdrRepository.findByCallerMsisdnOrReceiverMsisdnAndStartTimeBetween(msisdn, startOfMonth, endOfMonth))
                 .thenReturn(Collections.singletonList(cdr));
 
-        // Act
-        List<CDR> cdrs = cdrService.fetchCDRListByMsisdnAndTime(msisdn, startOfMonth, endOfMonth);
+        List<CDR> cdrList = cdrService.fetchCDRListByMsisdnAndTime(msisdn, startOfMonth, endOfMonth);
 
-        // Assert
-        assertEquals(1, cdrs.size());
+        assertEquals(1, cdrList.size());
+        assertEquals(msisdn, cdrList.get(0).getCallerMsisdn());
         verify(cdrRepository, times(1))
                 .findByCallerMsisdnOrReceiverMsisdnAndStartTimeBetween(msisdn, startOfMonth, endOfMonth);
     }

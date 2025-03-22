@@ -2,8 +2,6 @@ package org.example.service.CDR;
 
 import org.example.entity.CDR;
 import org.example.entity.Subscriber;
-import org.example.repository.CDRRepository;
-import org.example.repository.SubscriberRepository;
 import org.example.service.subscriber.SubscriberServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
