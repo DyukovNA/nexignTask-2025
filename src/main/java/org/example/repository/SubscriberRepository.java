@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface SubscriberRepository extends JpaRepository<Subscriber, String> {
     void deleteById(String msisdn);
-    @Query("SELECT s.msisdn FROM Subscriber s")
-    List<String> findAllMsisdn();
+//    @Query("SELECT s.msisdn FROM Subscriber s")
+//    List<String> findAllMsisdn();
 }

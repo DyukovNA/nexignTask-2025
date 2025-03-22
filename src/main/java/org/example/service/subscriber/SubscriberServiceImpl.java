@@ -33,9 +33,9 @@ public class SubscriberServiceImpl implements SubscriberService{
         subscriberRepository.deleteById(msisdn);
     }
 
-    @Override
-    public List<String> fetchMsisdnList() {
-        return subscriberRepository.findAllMsisdn();
-    }
+//    @Override
+//    public List<String> fetchMsisdnList() {
+//        return subscriberRepository.findAllMsisdn();
+//    }
 
 }

@@ -2,6 +2,7 @@ package org.example.service.UDR;
 
 import org.example.dto.UDR;
 import org.example.entity.CDR;
+import org.example.entity.Subscriber;
 import org.example.service.CDR.CDRServiceImpl;
 import org.example.service.subscriber.SubscriberServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +46,9 @@ public class UDRGenerationService {
         LocalDateTime endOfMonth = month.atEndOfMonth().atTime(23, 59, 59);
         Map<String, UDR> udrMap = new HashMap<>();
 
-        List<String> msisdns = subscriberService.fetchMsisdnList();
-        for (String msisdn : msisdns) {
+        List<Subscriber> subscribers = subscriberService.fetchSubscriberList();
+        for (Subscriber subscriber : subscribers) {
+            String msisdn = subscriber.getMsisdn();
             List<CDR> cdrs = cdrService.fetchCDRListByMsisdnAndTime(
                     msisdn, startOfMonth, endOfMonth);
             udrMap.put(msisdn, createUDRFromCDRs(msisdn, cdrs));

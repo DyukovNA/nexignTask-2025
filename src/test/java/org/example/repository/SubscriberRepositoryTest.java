@@ -43,21 +43,10 @@ class SubscriberRepositoryTest {
         subscriber2.setMsisdn(msisdn2);
         subscriberRepository.save(subscriber2);
 
-        List<String> msisdns = subscriberRepository.findAllMsisdn();
+        List<Subscriber> subscribers = subscriberRepository.findAll();
 
-        assertEquals(2, msisdns.size());
-        assertTrue(msisdns.contains(msisdn1));
-        assertTrue(msisdns.contains(msisdn2));
-    }
-
-    @Test
-    @Sql("/test-data.sql")
-    void findAllMsisdn_ShouldReturnMsisdnFromTestData() {
-        List<String> msisdns = subscriberRepository.findAllMsisdn();
-
-        assertEquals(3, msisdns.size());
-        assertTrue(msisdns.contains("79991112233"));
-        assertTrue(msisdns.contains("79992223344"));
-        assertTrue(msisdns.contains("79993334455"));
+        assertEquals(2, subscribers.size());
+        assertTrue(subscribers.contains(subscriber1));
+        assertTrue(subscribers.contains(subscriber2));
     }
 }

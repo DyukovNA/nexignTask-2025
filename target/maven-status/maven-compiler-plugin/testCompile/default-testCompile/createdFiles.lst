@@ -1,5 +1,7 @@
 org/example/controller/ReportControllerTest.class
-org/example/controller/UDRControllerTest.class
-org/example/repository/CDRRepositoryTest.class
+org/example/service/CDR/CDRServiceImplTest.class
 org/example/repository/SubscriberRepositoryTest.class
+org/example/controller/UDRControllerTest.class
+org/example/service/CDR/CDRGeneratorServiceTest.class
+org/example/repository/CDRRepositoryTest.class
 org/example/service/report/ReportServiceTest.class
