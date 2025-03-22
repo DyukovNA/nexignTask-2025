@@ -26,12 +26,12 @@ public class CDRServiceImpl implements CDRService {
 
     @Override
     public CDR saveCDR(CDR cdr) {
-        return null;
+        return cdrRepository.save(cdr);
     }
 
     @Override
     public List<CDR> fetchCDRList() {
-        return null;
+        return cdrRepository.findAll();
     }
 
     @Override

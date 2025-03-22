@@ -9,5 +9,5 @@ public interface SubscriberService {
     Subscriber saveSubscriber(Subscriber subscriber);
     List<Subscriber> fetchSubscriberList();
     void deleteSubscriberByID(String msisdn);
-    List<String> fetchMsisdnList();
+//    List<String> fetchMsisdnList();
 }
