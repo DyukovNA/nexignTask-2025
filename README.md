@@ -48,7 +48,7 @@
      }
    }
    
-3. Получение UDR отчетов для всех абонентов за месяц
+2. Получение UDR отчетов для всех абонентов за месяц
    Метод: GET
 
    URL: /udr/monthly
@@ -84,7 +84,7 @@
       }
    }
 
-   3. Генерация CDR отчета
+3. Генерация CDR отчета
 
    Метод: POST
    URL: /report/generate
@@ -98,6 +98,11 @@
    "http://localhost:8080/report/generate?msisdn=79992221122&startDate=2025-02-01T00:00:00&endDate=2025-02-28T23:59:59"
 
    Ответ: "Request ID: 6904e40f-43cb-4947-acc1-d1fbcea2f724"
+
+   Пример запроса с ошибкой:
+   "http://localhost:8080/report/generate?msisdn=79992221122&startDate=2023-02-01T00:00:00&endDate=2023-02-28T23:59:59"
+   
+   Ответ: "Error: No CDR records found"
 
    
 ### Библиотеки
@@ -117,3 +122,11 @@
    7. Spring Boot Starter Web. Предоставляет инструменты для создания REST API и обработки HTTP-запросов.
    
    8. JaCoCo. Используется для анализа покрытия кода тестами.
+
+### Покрытие тестами
+
+<img width="594" alt="Снимок экрана 2025-03-23 в 14 23 55" src="https://github.com/user-attachments/assets/fe543d16-67ea-4b4f-8c88-ea1a0d0749be" />
+
+
+   mvn clean test jacoco:report
+
