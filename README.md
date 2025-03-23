@@ -191,7 +191,7 @@ Error: No CDR records found
 
 Генерация отчёта производится командой:  
 ```
-mvn clean test jacoco:report
+mvn test jacoco:report
 ```
 
 ---
