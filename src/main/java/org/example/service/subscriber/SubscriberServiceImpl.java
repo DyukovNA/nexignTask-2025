@@ -8,11 +8,20 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Реализация сервиса для работы с абонентами.
+ * Предоставляет методы для сохранения, поиска и удаления абонентов.
+ */
 @Service
 @Component
 public class SubscriberServiceImpl implements SubscriberService{
     private final SubscriberRepository subscriberRepository;
 
+    /**
+     * Конструктор с внедрением зависимости репозитория абонентов.
+     *
+     * @param subscriberRepository репозиторий для работы с абонентами
+     */
     @Autowired
     public SubscriberServiceImpl(SubscriberRepository subscriberRepository) {
         this.subscriberRepository = subscriberRepository;

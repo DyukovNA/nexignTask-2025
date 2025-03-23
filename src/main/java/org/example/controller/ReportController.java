@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Контроллер для обработки запросов, связанных с генерацией отчетов.
+ * Предоставляет REST API для создания отчетов на основе CDR.
+ */
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/report")
@@ -16,12 +20,24 @@ public class ReportController {
 
     private final ReportGenerationService reportService;
 
+    /**
+     * Конструктор с внедрением зависимости сервиса генерации отчетов.
+     *
+     * @param reportService сервис для генерации отчетов
+     */
     @Autowired
     public ReportController(ReportGenerationService reportService) {
         this.reportService = reportService;
     }
 
-    // http://localhost:8080/report/generate?msisdn=79992221122&startDate=2025-02-01T00:00:00&endDate=2025-02-28T23:59:59
+    /**
+     * Генерирует отчет на основе CDR для указанного абонента в заданном временном интервале.
+     *
+     * @param msisdn    номер абонента
+     * @param startDate начало временного интервала
+     * @param endDate   конец временного интервала
+     * @return ответ с идентификатором запроса или сообщением об ошибке
+     */
     @GetMapping("/generate")
     public ResponseEntity<String> generateReport(
             @RequestParam String msisdn,

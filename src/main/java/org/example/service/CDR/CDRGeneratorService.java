@@ -14,6 +14,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+/**
+ * Сервис для генерации CDR записей.
+ * Предоставляет методы для создания CDR записей для абонентов за определенный период.
+ */
 @Service
 public class CDRGeneratorService {
 
@@ -25,6 +29,9 @@ public class CDRGeneratorService {
 
     private final Random random = new Random();
 
+    /**
+     * Генерирует CDR записи для всех абонентов за последний год.
+     */
     public void generateCDRsForYear() {
         List<Subscriber> subscribers = subscriberService.fetchSubscriberList();
         LocalDateTime startDate = LocalDateTime.now().minusYears(1);
@@ -39,6 +46,12 @@ public class CDRGeneratorService {
         }
     }
 
+    /**
+     * Генерирует CDR запись для указанного абонента в заданное время.
+     *
+     * @param subscriber абонент, для которого генерируется CDR запись
+     * @param startTime  время начала звонка
+     */
     public void generateCDRForSubscriber(Subscriber subscriber, LocalDateTime startTime) {
         CDR cdr = new CDR();
         cdr.setCallType(random.nextBoolean() ? "01" : "02");
@@ -50,6 +63,13 @@ public class CDRGeneratorService {
         cdrService.saveCDR(cdr);
     }
 
+    /**
+     * Возвращает случайный номер абонента, отличный от указанного.
+     *
+     * @param callerMsisdn номер абонента, инициировавшего звонок
+     * @return номер абонента, принимающего звонок
+     * @throws IllegalStateException если в списке абонентов нет других номеров, кроме callerMsisdn
+     */
     public String getRandomReceiverMsisdn(String callerMsisdn) {
         List<Subscriber> subscribers = subscriberService.fetchSubscriberList();
         Subscriber receiver = subscribers.get(random.nextInt(subscribers.size()));
@@ -62,6 +82,13 @@ public class CDRGeneratorService {
         return receiver.getMsisdn();
     }
 
+    /**
+     * Проверяет, существует ли в списке абонентов хотя бы один номер, отличный от указанного.
+     *
+     * @param callerMsisdn номер абонента, инициировавшего звонок
+     * @param subscribers  список абонентов
+     * @return true, если в списке есть другие номера, иначе false
+     */
     private boolean checkOtherMsisdnExists(String callerMsisdn, List<Subscriber> subscribers) {
         return subscribers.stream().anyMatch(element -> !element.getMsisdn().equals(callerMsisdn));
     }

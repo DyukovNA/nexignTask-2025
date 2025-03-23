@@ -10,18 +10,33 @@ import org.springframework.web.bind.annotation.*;
 import java.time.YearMonth;
 import java.util.Map;
 
+/**
+ * Контроллер для обработки запросов, связанных с UDR.
+ * Предоставляет REST API для получения отчетов о звонках абонентов.
+ */
 @RestController
 @RequestMapping("/udr")
 public class UDRController {
-
     private final UDRGenerationService udrService;
 
+    /**
+     * Конструктор с внедрением зависимости сервиса генерации UDR.
+     *
+     * @param udrService сервис для генерации UDR
+     */
     @Autowired
     public UDRController(UDRGenerationService udrService) {
         this.udrService = udrService;
     }
 
-    // Метод для получения UDR записи по одному абоненту
+    /**
+     * Возвращает UDR для указанного абонента.
+     * Если указан месяц, возвращает отчет за этот месяц. Иначе возвращает отчет за всё время.
+     *
+     * @param msisdn номер абонента
+     * @param month  месяц в формате YYYY-MM (опционально)
+     * @return объект UDR с деталями звонков абонента
+     */
     @GetMapping("/{msisdn}")
     public UDR getUDRForSubscriber(
             @PathVariable String msisdn,
@@ -33,7 +48,12 @@ public class UDRController {
         }
     }
 
-    // Метод для получения UDR записей по всем абонентам за месяц
+    /**
+     * Возвращает UDR для всех абонентов за указанный месяц.
+     *
+     * @param month месяц в формате YYYY-MM
+     * @return карта, где ключ — номер абонента, а значение — объект UDR
+     */
     @GetMapping("/monthly")
     public Map<String, UDR> getUDRForAllSubscribers(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) YearMonth month) {

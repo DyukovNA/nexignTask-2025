@@ -12,12 +12,22 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.*;
 
+/**
+ * Реализация сервиса для работы с CDR.
+ * Предоставляет методы для сохранения, поиска, удаления и инициализации данных CDR.
+ */
 @Service
 @Component
 public class CDRServiceImpl implements CDRService {
     private final CDRRepository cdrRepository;
     private final SubscriberServiceImpl subscriberService;
 
+    /**
+     * Конструктор с внедрением зависимостей.
+     *
+     * @param cdrRepository   репозиторий для работы с CDR
+     * @param subscriberService сервис для работы с абонентами
+     */
     @Autowired
     public CDRServiceImpl (CDRRepository cdrRepository, SubscriberServiceImpl subscriberService) {
         this.cdrRepository = cdrRepository;
@@ -62,11 +72,17 @@ public class CDRServiceImpl implements CDRService {
         );
     }
 
+    /**
+     * Метод, выполняемый после создания бина. Инициализирует данные.
+     */
     @PostConstruct
     public void init() {
         initializeData();
     }
 
+    /**
+     * Инициализирует список абонентов.
+     */
     private void initializeSubscribers() {
         List<String> msisdns = Arrays.asList(
                 "79992221122", "79993331133", "79994441144", "79995551155",
@@ -81,6 +97,9 @@ public class CDRServiceImpl implements CDRService {
         }
     }
 
+    /**
+     * Генерирует CDR записи для всех абонентов за последний год.
+     */
     private void generateCDRsForYear() {
         List<Subscriber> subscribers = subscriberService.fetchSubscriberList();
         LocalDateTime startDate = LocalDateTime.now().minusYears(1);
@@ -103,6 +122,13 @@ public class CDRServiceImpl implements CDRService {
         saveAllCDRs(allCDRs);
     }
 
+    /**
+     * Генерирует CDR запись для указанного абонента в заданное время.
+     *
+     * @param subscriber абонент, для которого генерируется CDR запись
+     * @param startTime  время начала звонка
+     * @return сгенерированная CDR запись
+     */
     private CDR generateCDRForSubscriber(Subscriber subscriber, LocalDateTime startTime) {
         CDR cdr = new CDR();
         Random random = new Random();
@@ -115,6 +141,12 @@ public class CDRServiceImpl implements CDRService {
         return cdr;
     }
 
+    /**
+     * Возвращает случайный номер абонента, отличный от указанного.
+     *
+     * @param callerMsisdn номер абонента, инициировавшего звонок
+     * @return номер абонента, принимающего звонок
+     */
     private String getRandomReceiverMsisdn(String callerMsisdn) {
         Random random = new Random();
         List<Subscriber> subscribers = subscriberService.fetchSubscriberList();
