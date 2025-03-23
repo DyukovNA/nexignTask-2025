@@ -125,8 +125,9 @@
 
 ### Покрытие тестами
 
-<img width="594" alt="Снимок экрана 2025-03-23 в 14 23 55" src="https://github.com/user-attachments/assets/fe543d16-67ea-4b4f-8c88-ea1a0d0749be" />
+   <img width="594" alt="Снимок экрана 2025-03-23 в 14 23 55" src="https://github.com/user-attachments/assets/fe543d16-67ea-4b4f-8c88-ea1a0d0749be" />
 
+   Отчёт по покрытию тестами находится в директории target/site/jacoco/index.html
 
-   mvn clean test jacoco:report
+   Генерация отчёта производится командой mvn clean test jacoco:report
 
