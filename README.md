@@ -1,66 +1,53 @@
 # NexignTask-2025
- Task for Nexign Bootcamp 2025
 
-Описание проекта
+## Описание проекта
 Проект CDR Service представляет собой микросервис для генерации и обработки Call Detail Records (CDR) — записей о звонках абонентов сотового оператора. Сервис генерирует CDR записи, сохраняет их в базу данных и предоставляет REST API для получения отчетов в формате UDR (Usage Data Record).
 
-Основные функции:
+### Основные функции:
 
 - Генерация CDR записей для абонентов.
 - Сохранение CDR записей в базу данных.
 - Предоставление REST API для получения UDR отчетов.
 
-REST Endpoints
+### REST Endpoints
 1. Генерация CDR отчета
+
    Метод: POST
+   URL: /report/generate
 
-URL: /report/generate
+   Параметры:
+   - msisdn (строка): Номер абонента.
+   - startDate (дата и время): Начало периода.
+   - endDate (дата и время): Конец периода.
+   
+   Пример запроса:
+   "http://localhost:8080/report/generate?msisdn=79992221122&startDate=2025-02-01T00:00:00&endDate=2025-02-28T23:59:59"
 
-Параметры:
-
-msisdn (строка): Номер абонента.
-
-startDate (дата и время): Начало периода.
-
-endDate (дата и время): Конец периода.
-
-Пример запроса:
-
-Copy
-POST /report/generate?msisdn=79992221122&startDate=2025-02-01T00:00:00&endDate=2025-02-28T23:59:59
-Ответ:
-
-json
-Copy
-"Report generation started. Request ID: 61f0c404-5cb3-11e7-907b-a6006ad3dba0"
-2. Получение UDR отчета для одного абонента
+   Ответ: "Request ID: 6904e40f-43cb-4947-acc1-d1fbcea2f724"
+   
+3. Получение UDR отчета для одного абонента
+   
    Метод: GET
+   URL: /udr/{msisdn}
 
-URL: /udr/{msisdn}
+   Параметры:
+   - msisdn (строка): Номер абонента.
+   - month (опционально, строка): Месяц в формате YYYY-MM.
 
-Параметры:
-
-msisdn (строка): Номер абонента.
-
-month (опционально, строка): Месяц в формате YYYY-MM.
-
-Пример запроса:
-
-Copy
-GET /udr/79992221122?month=2025-02
-Ответ:
-
-json
-Copy
-{
-"msisdn": "79992221122",
-"incomingCall": {
-"totalTime": "02:12:13"
-},
-"outcomingCall": {
-"totalTime": "00:02:50"
-}
-}
+   Пример запроса:
+   "http://localhost:8080/udr/79992221122?month=2025-02"
+   
+   Ответ:
+   {
+     "msisdn": "79992221122",
+     "incomingCall": {
+       "totalTime": "15:27:44"
+     },
+     "outcomingCall": {
+       "totalTime": "13:33:42"
+     }
+   }
+   
 3. Получение UDR отчетов для всех абонентов за месяц
    Метод: GET
 
